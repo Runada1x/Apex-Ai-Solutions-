@@ -2,8 +2,20 @@
 
 import { motion } from 'framer-motion'
 import { ChevronDown, Play, CheckCircle, TrendingUp, Clock, Mail, Target, Calendar } from 'lucide-react'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
+
+type YTAPI = {
+  Player?: new (
+    elementId: string,
+    params?: { events?: { onStateChange?: (event: { data: number }) => void } }
+  ) => unknown
+  PlayerState: { ENDED: number }
+}
+
+type YTWindow = Window & {
+  YT?: YTAPI
+  onYouTubeIframeAPIReady?: () => void
+}
 
 const stats = [
   { number: "50+", label: "Monthly Meetings" },
@@ -62,6 +74,8 @@ const benefits = [
 
 export default function Home() {
   const [showFloatingButton, setShowFloatingButton] = useState(true)
+  const [videoEnded, setVideoEnded] = useState(false)
+  const [videoSrc, setVideoSrc] = useState("")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,6 +95,46 @@ export default function Home() {
     document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Prepare YouTube embed with JS API enabled and wire end event
+  useEffect(() => {
+    // Set video src on client to include correct origin
+    setVideoSrc(
+      `https://www.youtube.com/embed/ay7OySbQbLA?rel=0&modestbranding=1&showinfo=0&enablejsapi=1&origin=${window.location.origin}`
+    )
+
+    const setupPlayer = () => {
+      const w = window as YTWindow
+      if (w.YT && w.YT.Player) {
+        try {
+          // Create/attach a YT player to listen for end event
+          // If already initialized, ignore errors gracefully
+          new w.YT.Player('demo-video', {
+            events: {
+              onStateChange: (event: { data: number }) => {
+                if (w.YT && event?.data === w.YT.PlayerState.ENDED) {
+                  setVideoEnded(true)
+                  setTimeout(() => scrollToBooking(), 800)
+                }
+              },
+            },
+          })
+        } catch {
+          // no-op
+        }
+      }
+    }
+
+    const w = window as YTWindow
+    if (w.YT && w.YT.Player) {
+      setupPlayer()
+    } else {
+      w.onYouTubeIframeAPIReady = setupPlayer
+      const tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      document.body.appendChild(tag)
+    }
+  }, [])
+
   return (
     <main className="min-h-screen bg-slate-950 text-white relative">
       {/* Hero Section */}
@@ -91,36 +145,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
         </div>
 
-        {/* Top Navigation with Logo - Fixed Position - BIGGER */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed top-6 left-6 z-50 bg-slate-900/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-slate-700/50 shadow-2xl"
-        >
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 relative">
-              <Image
-                src="/apex-logo.jpg"
-                alt="APEX AI Solutions Logo"
-                width={80}
-                height={80}
-                className="w-full h-full object-contain"
-                priority
-              />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">
-                <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                  APEX
-                </span>
-              </h1>
-              <p className="text-sm text-slate-300 font-light tracking-wider">
-                AI SOLUTIONS
-              </p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Logo moved to global fixed header in layout */}
 
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
@@ -264,8 +289,9 @@ export default function Home() {
             {/* YouTube Video Embed */}
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
               <iframe 
+                id="demo-video"
                 className="absolute top-0 left-0 w-full h-full rounded-2xl"
-                src="https://www.youtube.com/embed/ay7OySbQbLA?rel=0&modestbranding=1&showinfo=0"
+                src={videoSrc || "about:blank"}
                 title="Behavioral Intelligence Demo"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -273,6 +299,42 @@ export default function Home() {
               />
             </div>
           </motion.div>
+
+          {/* Persistent CTA under the video */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-8 text-center bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl border border-slate-700/50"
+          >
+            <p className="text-slate-200 mb-4">
+              After you watch this video to learn more about our behavioral intelligence system,
+              book a meeting so we can discuss and start maximizing with AI as soon as possible.
+            </p>
+            <a
+              href="#booking"
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToBooking()
+              }}
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25"
+            >
+              <Target className="w-5 h-5" />
+              Book Your Consultation
+            </a>
+          </motion.div>
+
+          {videoEnded && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mt-8"
+            >
+              <p className="text-slate-400">Thanks for watching — booking your discovery call now will save you time.</p>
+            </motion.div>
+          )}
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -392,7 +454,7 @@ export default function Home() {
       </section>
 
       {/* Booking Section */}
-      <section id="booking" className="py-20 bg-slate-900/50">
+      <section id="booking" className="py-20 bg-slate-900/50 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
