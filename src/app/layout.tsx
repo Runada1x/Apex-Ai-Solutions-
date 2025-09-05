@@ -14,9 +14,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "APEX AI Solutions — Behavioral Intelligence Lead Gen",
+  metadataBase: new URL("https://apexaisolutions.systems"),
+  title: {
+    default: "APEX AI Solutions — Behavioral Intelligence Lead Gen",
+    template: "%s | APEX AI Solutions",
+  },
   description:
     "Stop wasting 20+ hours weekly on manual lead research. Book more meetings with AI-driven behavioral intelligence.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
+  openGraph: {
+    title: "APEX AI Solutions — Behavioral Intelligence Lead Gen",
+    description:
+      "Stop wasting 20+ hours weekly on manual lead research. Book more meetings with AI-driven behavioral intelligence.",
+    url: "/",
+    siteName: "APEX AI Solutions",
+    images: [
+      {
+        url: "/apex-logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "APEX AI Solutions",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "APEX AI Solutions — Behavioral Intelligence Lead Gen",
+    description:
+      "Stop wasting 20+ hours weekly on manual lead research. Book more meetings with AI-driven behavioral intelligence.",
+    images: ["/apex-logo.jpg"],
+  },
+  alternates: { canonical: "/" },
 };
 
 export default function RootLayout({
