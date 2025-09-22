@@ -1,63 +1,55 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ChevronDown, Play, CheckCircle, TrendingUp, Clock, Mail, Target, Calendar } from 'lucide-react'
-import Image from 'next/image'
+import { CheckCircle, Target, Calendar, Zap, Users, BarChart3, ArrowRight, PlayCircle } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import AnimatedLogo from '@/components/AnimatedLogo'
+import YouTubeEmbed from '@/components/YouTubeEmbed'
 
-const stats = [
-  { number: "50+", label: "Monthly Meetings" },
-  { number: "$30K+", label: "Revenue Generated" },
-  { number: "15%", label: "Response Rates" }
+const industries = [
+  "Marketing Agencies", "Consulting", "SaaS Companies", "E-commerce",
+  "Real Estate", "Healthcare", "Financial Services", "Technology",
+  "Education", "Manufacturing", "Professional Services", "Cybersecurity"
 ]
 
-const problems = [
+const expertise = [
   {
-    icon: Clock,
-    title: "20+ Hours Weekly Wasted",
-    description: "Your team spends entire days manually researching leads, checking LinkedIn profiles, and crafting personalized emails that still get ignored."
+    title: "Behavioral Intelligence",
+    description: "Advanced AI analysis of prospect behavior patterns and communication styles"
   },
   {
-    icon: Mail,
-    title: "Generic Emails Get Deleted", 
-    description: "Apollo and ZoomInfo&apos;s &apos;AI personalization&apos; is just ChatGPT with basic data. Your prospects get the same template emails as everyone else."
+    title: "Lead Sourcing",
+    description: "Multi-platform data gathering and prospect identification"
   },
   {
-    icon: TrendingUp,
-    title: "1% Response Rates",
-    description: "You&apos;re sending 1,000 generic emails hoping for 1% response rates while your competitors are getting 10-15% with behavioral intelligence."
+    title: "Deliverability",
+    description: "Email infrastructure optimization for maximum inbox placement"
+  },
+  {
+    title: "Automation",
+    description: "End-to-end campaign management and response handling"
+  },
+  {
+    title: "AI Personalization",
+    description: "Dynamic message generation based on behavioral insights"
   }
 ]
 
-const solutions = [
-  {
-    number: "1",
-    title: "Multi-Source Intelligence",
-    description: "System analyzes LinkedIn posts, website content, Google research, and engagement patterns to build comprehensive behavioral profiles."
-  },
-  {
-    number: "2", 
-    title: "AI Behavioral Analysis",
-    description: "Advanced AI processes multiple data points to understand pain points, communication style, and decision-making patterns."
-  },
-  {
-    number: "3",
-    title: "Custom Email Generation", 
-    description: "Creates completely personalized emails based on behavioral intelligence - not templates with names dropped in."
-  },
-  {
-    number: "4",
-    title: "Automated Campaign Management",
-    description: "Handles responses, books meetings, updates CRM, and follows up until they book or ask to stop."
-  }
+const processSteps = [
+  { number: "1", title: "AI", description: "Behavioral Intelligence Analysis" },
+  { number: "2", title: "Lead Gen", description: "Multi-Source Lead Generation" },
+  { number: "3", title: "Automation", description: "Campaign Management & Follow-up" }
 ]
 
-const benefits = [
-  "Review your current lead generation process",
-  "Identify automation opportunities", 
-  "Custom solution design for your business",
-  "See if behavioral intelligence fits your needs",
-  "No pressure, just possibilities"
+const scaleFeatures = [
+  "Predictable results every month",
+  "No limit on potential output",
+  "Optimization & Growth refining and scaling automation for efficiency",
+  "15% average response rates vs industry 1-3%",
+  "50+ qualified meetings monthly",
+  "$30,000+ revenue generated from automation alone"
 ]
 
 export default function Home() {
@@ -65,9 +57,9 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const bookingSection = document.getElementById('booking')
-      if (bookingSection) {
-        const rect = bookingSection.getBoundingClientRect()
+      const contactSection = document.getElementById('contact')
+      if (contactSection) {
+        const rect = contactSection.getBoundingClientRect()
         const isVisible = rect.top <= window.innerHeight && rect.bottom >= 0
         setShowFloatingButton(!isVisible)
       }
@@ -77,385 +69,328 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToBooking = () => {
-    document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white relative">
+    <main className="min-h-screen bg-gray-900 text-white relative">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-950 to-emerald-900/20" />
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
-        </div>
-
-        {/* Top Navigation with Logo - Fixed Position - BIGGER */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed top-6 left-6 z-50 bg-slate-900/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-slate-700/50 shadow-2xl"
-        >
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 relative">
-              <Image
-                src="/apex-logo.jpg"
-                alt="APEX AI Solutions Logo"
-                width={80}
-                height={80}
-                className="w-full h-full object-contain"
-                priority
-              />
+      <section className="relative min-h-screen flex items-center px-8 py-32"
+               style={{
+                 background: 'radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, rgba(10, 10, 10, 1) 70%)'
+               }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">
+                AI powered behavioral intelligence
+              </span>
+            </h1>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+              APEX AI Solutions strategically integrates behavioral intelligence lead generation systems into your business
+            </p>
+            <div className="flex gap-4">
+              <Link href="#contact" className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                <Target className="w-5 h-5" />
+                Get Started
+              </Link>
+              <Link href="/lead-gen" className="inline-flex items-center gap-3 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-gray-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
+                <PlayCircle className="w-5 h-5" />
+                Watch Demo
+              </Link>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">
-                <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                  APEX
-                </span>
-              </h1>
-              <p className="text-sm text-slate-300 font-light tracking-wider">
-                AI SOLUTIONS
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+          </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative flex justify-center"
           >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Stop Wasting{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                20+ Hours Weekly
-              </span>{' '}
-              on Manual Lead Research
-            </h2>
-            
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto">
-              The behavioral intelligence system that books 50+ qualified meetings monthly 
-              and generated $30,000+ in revenue from automations alone
+            <AnimatedLogo size="hero" className="drop-shadow-2xl" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Video Demo Section */}
+      <section className="py-20 px-8 bg-gray-900">
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-6 text-cyan-400">Watch The Demo Below</h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+              See how APEX AI transforms your lead generation process with behavioral intelligence and automation
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            {/* Replace "YOUR_VIDEO_ID" with your actual YouTube video ID */}
+            <YouTubeEmbed
+              videoId="ay7OySbQbLA"
+              title="APEX AI Solutions Demo"
+              className="shadow-2xl shadow-cyan-500/20"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="services" className="py-20 px-8 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold mb-6 text-cyan-400">Together</h2>
+            <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+              At APEX AI Solutions, we empower businesses to integrate behavioral intelligence lead generation seamlessly,
+              driving more appointments, sales and revenue.
+            </p>
+            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              Our system provides a structured, strategic and automated approach to lead generation,
+              ensuring reliable bookings that will help you grow your business.
             </p>
 
-            {/* Stats */}
-            <div className="flex flex-col sm:flex-row justify-center gap-8 mb-12">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-slate-400 text-sm uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
+            <div className="mt-12">
+              <h3 className="text-2xl font-semibold mb-6 text-white">Industries we have worked with</h3>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                {industries.map((industry, index) => (
+                  <motion.div
+                    key={industry}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="bg-gray-700/50 border border-cyan-500/20 rounded-lg p-4 text-center font-medium text-white hover:bg-cyan-500/10 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    {industry}
+                  </motion.div>
+                ))}
+              </div>
             </div>
-
-            <motion.a
-              href="#demo"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25"
-            >
-              <Play className="w-5 h-5" />
-              Watch The Demo Below
-            </motion.a>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          >
-            <ChevronDown className="w-6 h-6 text-slate-400 animate-bounce" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Problem Section */}
-      <section className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="relative"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              The Problem Every{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                Agency Faces
-              </span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {problems.map((problem, index) => {
-              const IconComponent = problem.icon
-              return (
-                <motion.div
-                  key={problem.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300 group"
-                >
-                  <div className="mb-6">
-                    <IconComponent className="w-12 h-12 text-emerald-400 group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 group-hover:text-cyan-400 transition-colors duration-300">
-                    {problem.title}
-                  </h3>
-                  <p className="text-slate-300 leading-relaxed">
-                    {problem.description}
-                  </p>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Demo Section */}
-      <section id="demo" className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Watch How{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                Behavioral Intelligence
-              </span>{' '}
-              Works
-            </h2>
-            <p className="text-xl text-slate-300 max-w-4xl mx-auto">
-              You are one step away from solving your client acquisition problems and having your dream clients book straight into your calendar, on autopilot, all day long, without having to raise a finger!
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/20"
-          >
-            {/* YouTube Video Embed */}
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <iframe 
-                className="absolute top-0 left-0 w-full h-full rounded-2xl"
-                src="https://www.youtube.com/embed/ay7OySbQbLA?rel=0&modestbranding=1&showinfo=0"
-                title="Behavioral Intelligence Demo"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+            <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/20">
+              <Image
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Business Analytics"
+                fill
+                className="object-cover"
               />
             </div>
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="text-center text-slate-400 italic mt-6"
-          >
-            This isn&apos;t template personalization - this is behavioral intelligence understanding pain points
-          </motion.p>
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Problem/Solutions Section */}
+      <section id="solutions" className="py-20 px-8 bg-gray-900">
+        <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              How The{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                System Works
-              </span>
-            </h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">We redefine client acquisition.</h2>
+            <p className="text-xl text-gray-300 max-w-5xl mx-auto leading-relaxed">
+              If you're still manually hunting for leads, sending cold messages that get ignored, spending a fortune on expensive ads
+              or even relying on other people to bring you business, you are not alone. Most B2B businesses are stuck in the same cycle:
+              inconsistent leads, wasted time, burning money and zero predictability in their sales pipeline, and that's exactly the problem we solve.
+            </p>
+            <p className="text-xl text-gray-300 max-w-5xl mx-auto leading-relaxed mt-6">
+              We've built a fully automated system that handles lead generation from end to end using behavioral intelligence,
+              real-time data scraping, and human-like outreach that actually gets responses.
+            </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {solutions.map((solution, index) => (
+          <h3 className="text-2xl font-semibold mb-8 text-cyan-400">Our Expertise</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {expertise.map((item, index) => (
               <motion.div
-                key={solution.title}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300 group relative overflow-hidden"
+                className="bg-gray-800/50 border border-cyan-500/20 rounded-2xl p-8 text-center hover:bg-cyan-500/10 hover:border-cyan-400 transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-emerald-500"></div>
-                
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {solution.number}
-                  </div>
-                  <h3 className="text-xl font-semibold group-hover:text-cyan-400 transition-colors duration-300">
-                    {solution.title}
-                  </h3>
-                </div>
-                
-                <p className="text-slate-300 leading-relaxed ml-16">
-                  {solution.description}
-                </p>
+                <h3 className="text-xl font-semibold mb-4 text-cyan-400">{item.title}</h3>
+                <p className="text-gray-300 leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Process Section */}
+      <section id="expertise" className="py-20 px-8 bg-gradient-to-b from-gray-800 to-gray-900">
+        <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">
+                By blending behavioral intelligence and automation…
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-5xl mx-auto leading-relaxed">
+              We bring together what was once impossible: With our team of AI developers and behavioral intelligence specialists,
+              we have bridged the gap between one-to-one, personal outreach to integrate the same feel of personalization, but at scale.
+              From painfully researching and contacting each person individually, AI can now do the heavy lifting!
+            </p>
+          </motion.div>
+
+          <h3 className="text-2xl font-semibold mb-8 text-cyan-400">Our Expertise</h3>
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  {step.number}
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-cyan-400">{step.title}</h3>
+                <p className="text-gray-300">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Scale Section */}
+      <section id="why" className="py-20 px-8 bg-gray-900">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/20">
+              <Image
+                src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Business Growth"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold mb-8 text-white">…We build systems that scale with your business.</h2>
+            <ul className="space-y-4">
+              {scaleFeatures.map((feature, index) => (
+                <motion.li
+                  key={feature}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="flex items-center gap-4 text-lg text-gray-300"
+                >
+                  <CheckCircle className="w-6 h-6 text-cyan-400 flex-shrink-0" />
+                  {feature}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Philosophy Section */}
+      <section className="py-20 px-8 bg-gray-800">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-12">
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                Quality Over Quantity
-              </span>
-            </h2>
-
-            <div className="bg-slate-800/50 backdrop-blur-sm p-12 rounded-2xl border border-slate-700/50">
-              <blockquote className="text-2xl text-slate-300 italic mb-8 leading-relaxed">
-                &quot;While competitors send 1,000 generic emails hoping for 1% response rates, we send 200 behavioral intelligence emails and get 10-15% response rates. The quality of research is what separates us from everyone else.&quot;
-              </blockquote>
-              <p className="text-cyan-400 font-semibold">
-                — Proven Results from Behavioral Intelligence
-              </p>
+            <h2 className="text-4xl font-bold mb-8 text-cyan-400">Redefining Lead generation, reshaping Scalability</h2>
+            <div className="text-left space-y-6 text-lg text-gray-300 leading-relaxed">
+              <p>APEX AI Solutions isn't just another lead generation agency. We work differently. We provide you with a lifetime solution, not just a monthly service.</p>
+              <p>We believe AI is the greatest shift in human history since modern farming, reshaping how we live, work, and create. AI has unlocked new opportunities, industries, and thousands of careers.</p>
+              <p>By integrating intelligent behavioral analysis, we help businesses scale, adapt, and lead in this new era. AI isn't the future. It's happening now, and we're driving the change.</p>
+              <p><strong className="text-cyan-400">Together, we turn behavioral intelligence into opportunity.</strong> Call us – and let's get started!</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-cyan-900/20 via-slate-950 to-emerald-900/20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Final CTA Section */}
+      <section id="contact" className="py-20 px-8 bg-gradient-to-r from-cyan-900/20 via-gray-900 to-blue-900/20 text-center">
+        <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Stop{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                Manual Research
-              </span>{' '}
-              Forever?
-            </h2>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              You&apos;re already behind if you&apos;re still doing lead research manually while competitors use behavioral intelligence
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white">The next era of work starts now</h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Want to shape the future of AI with us? Stop wasting 20+ hours weekly on manual lead research.
             </p>
-            <a
-              href="#booking"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25"
-            >
-              <Target className="w-5 h-5" />
-              Book Your Consultation
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="https://calendly.com/runoridolor/30min"
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+              >
+                <Calendar className="w-5 h-5" />
+                Start the conversation
+              </a>
+              <Link
+                href="/lead-gen"
+                className="inline-flex items-center gap-3 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-gray-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300"
+              >
+                <PlayCircle className="w-5 h-5" />
+                Watch Demo
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Booking Section */}
-      <section id="booking" className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Book Your{' '}
-                <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                  Discovery Call
-                </span>
-              </h2>
-              <p className="text-xl text-slate-300 mb-8">
-                This isn&apos;t a sales call - it&apos;s a strategic consultation to see what&apos;s possible for your business.
-              </p>
-              
-              <ul className="space-y-4 mb-8">
-                {benefits.map((benefit, index) => (
-                  <motion.li
-                    key={benefit}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3"
-                  >
-                    <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-                    <span className="text-slate-300">{benefit}</span>
-                  </motion.li>
-                ))}
-              </ul>
-              
-              <p className="text-slate-400 font-medium">
-                Nine times out of ten, what you need is possible. Let&apos;s find out what automation would look like for you.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50"
-            >
-              {/* Calendly Integration - Simple Iframe Approach */}
-              <div className="calendly-embed bg-white rounded-xl overflow-hidden" style={{ height: '700px' }}>
-                <iframe 
-                  src="https://calendly.com/runoridolor/30min?embed_domain=localhost&embed_type=Inline"
-                  width="100%" 
-                  height="100%"
-                  frameBorder="0"
-                  title="Select a Date & Time - Calendly"
-                  className="rounded-xl"
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Floating Book Meeting Button */}
+      {/* Floating Action Button */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: showFloatingButton ? 1 : 0 }}
@@ -463,12 +398,11 @@ export default function Home() {
         className="fixed bottom-6 right-6 z-50"
       >
         <button
-          onClick={scrollToBooking}
-          className="group bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white px-8 py-5 rounded-full font-bold text-xl shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-4"
+          onClick={scrollToContact}
+          className="group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
         >
-          <Calendar className="w-7 h-7 group-hover:scale-110 transition-transform duration-300" />
-          <span>Book Discovery Meeting</span>
-          <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+          <Calendar className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
+          <span>Book Call</span>
         </button>
       </motion.div>
     </main>
